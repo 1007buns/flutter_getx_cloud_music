@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_getx_cloud_music/pages/home/index.dart';
+import 'package:flutter_getx_cloud_music/pages/tabbar/discovery/view.dart';
 import 'package:get/get.dart';
 
 import '../test.dart';
@@ -9,7 +10,7 @@ class HomePage extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: _buildAppbar(),
+        // appBar: _buildAppbar(),
         body: _buildPageView(),
         bottomNavigationBar: _buildBottomNavigationBar(),
       );
@@ -23,11 +24,11 @@ class HomePage extends GetView<HomeController> {
         physics: const NeverScrollableScrollPhysics(),
         children: const [
           // Account(),
-          // Discovery(),
+          Discovery(),
           // Video(),
           // Friends(),
           // Mine(),
-          TestPage(),
+
           TestPage(),
           TestPage(),
           TestPage(),
