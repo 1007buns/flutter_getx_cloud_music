@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_getx_cloud_music/global.dart';
 import 'package:flutter_getx_cloud_music/routes/routes.dart';
+import 'package:flutter_getx_cloud_music/style/theme.dart';
 import 'pages/home/index.dart';
-import 'pages/home/view.dart';
 import 'package:get/get.dart';
 
 void main() {
+  // runApp(const MyApp());
+  appInit();
+}
+
+appInit() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // service
+  Get.put<GlobalService>(GlobalService());
+  // 启动app
   runApp(const MyApp());
 }
 
@@ -17,9 +27,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: GlobalService.to.isDarkModel ? AppTheme.dark : AppTheme.light,
       getPages: AppPages.routes,
       initialRoute: AppPages.initial,
       initialBinding: HomeBinding(),

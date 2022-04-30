@@ -1,3 +1,4 @@
+import 'package:flutter_getx_cloud_music/global.dart';
 import 'package:flutter_getx_cloud_music/pages/tabbar/index.dart';
 import 'package:get/get.dart';
 
@@ -8,5 +9,6 @@ class HomeBinding implements Bindings {
   void dependencies() {
     Get.lazyPut<HomeController>(() => HomeController());
     Get.lazyPut<DiscoveryController>(() => DiscoveryController());
+    Get.lazyPut<GlobalService>(() => GlobalService());
   }
 }

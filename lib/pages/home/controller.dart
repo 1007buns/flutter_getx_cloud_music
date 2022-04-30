@@ -1,15 +1,20 @@
+import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_getx_cloud_music/pages/home/state.dart';
+import 'package:flutter_getx_cloud_music/global.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 
 class HomeController extends GetxController {
-  final state = HomeState();
   // tab页标题
   late final List tabTitles;
   // 页控制器
   late final PageController pageController;
   // 底部导航栏项目
-  late final List<BottomNavigationBarItem> bottomTabs;
+  late final List<BubbleBottomBarItem> bottomTabs;
+  // 底部导航索引
+  final currentIndex = 0.obs;
+  // 当前tab页码
+  final page = 0.obs;
 
   @override
   void onInit() {
@@ -18,34 +23,33 @@ class HomeController extends GetxController {
       {'icon': Icons.add, 'text': "发现", 'activeIcon': Icons.find_in_page},
       {'icon': Icons.add, 'text': "视频", 'activeIcon': Icons.find_in_page},
       {'icon': Icons.add, 'text': "我的", 'activeIcon': Icons.find_in_page},
-      {'icon': Icons.add, 'text': "朋友", 'activeIcon': Icons.find_in_page},
       {'icon': Icons.add, 'text': "账号", 'activeIcon': Icons.find_in_page},
     ];
     bottomTabs = tabTitles
         .map(
-          (tab) => BottomNavigationBarItem(
-            icon: Icon(tab['icon']),
-            label: tab['text'],
+          (tab) => BubbleBottomBarItem(
+            icon: Obx(
+              () => Icon(
+                tab['icon'],
+                color: GlobalService.to.isDarkModel
+                    ? Colors.white54
+                    : Colors.black54,
+              ),
+            ),
+            title: Shimmer.fromColors(
+              loop: 1,
+              child: Text('${tab['text']}'),
+              baseColor: Colors.red,
+              highlightColor: Colors.greenAccent,
+            ),
             activeIcon: Icon(tab['activeIcon']),
-            backgroundColor: Colors.black,
+            backgroundColor: Colors.red,
           ),
         )
         .toList();
+    pageController = PageController(initialPage: page.value, keepPage: true);
 
-    //    BottomNavigationBarItem(
-    //    icon: Icon(
-    //     Iconfont.me,
-    //     color: AppColor.defaultColor,
-    //    ),
-    //    activeIcon: Icon(
-    //     Iconfont.me,
-    //     color: AppColor.activeColor,
-    //    ),
-    //    label: 'my',
-    //    backgroundColor: AppColor.primaryBackground,
-    // ),
-
-    pageController = PageController(initialPage: state.page);
+    bubbleBottomBarItem();
   }
 
   @override
@@ -54,14 +58,21 @@ class HomeController extends GetxController {
     pageController.dispose();
   }
 
-  // tab栏动画
+  /// bubbleBottomBarItem
+  void bubbleBottomBarItem() {}
+
+  /// tab栏动画
   void handleNavBarTap(int index) {
     pageController.animateToPage(index,
         duration: const Duration(milliseconds: 200), curve: Curves.ease);
   }
 
-  // tab栏页码切换
-  void handlePageChanged(int page) {
-    state.page = page;
+  ///tab栏页码切换
+  void handlePageChanged(int pageIndex) {
+    currentIndex.value = pageIndex;
+  }
+
+  void onPageChanged(int? index) {
+    page.value = index!;
   }
 }

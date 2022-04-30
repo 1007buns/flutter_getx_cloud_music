@@ -4,6 +4,8 @@ import 'package:flutter_getx_cloud_music/utils/dio_util/dio_method.dart';
 
 import 'dio_interceptors.dart';
 
+DioUtil dioUtil = DioUtil();
+
 class DioUtil {
   static DioUtil? _instance;
   static Dio _dio = Dio();
@@ -86,7 +88,7 @@ class DioUtil {
       );
       return response.data;
     } on DioError catch (e) {
-      rethrow;
+      throw e;
     }
   }
 }
