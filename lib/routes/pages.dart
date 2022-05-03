@@ -11,6 +11,11 @@ class AppPages {
       name: AppRoutes.home,
       page: () => HomePage(),
       binding: HomeBinding(),
-    )
+    ),
+    GetPage(
+      name: AppRoutes.playList,
+      page: () => TopPlaylistSongsPage(),
+      transition: Transition.fadeIn,
+    ),
   ];
 }

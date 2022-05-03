@@ -1,9 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_getx_cloud_music/global.dart';
-import 'package:flutter_getx_cloud_music/pages/tabbar/mine/view.dart';
-import 'package:flutter_getx_cloud_music/widgets/top_playlist_songs.dart';
+import 'package:flutter_getx_cloud_music/pages/tabbar/mine/index.dart';
+
 import 'package:get/get.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:shimmer/shimmer.dart';
@@ -65,7 +63,7 @@ class GetXDiscovery extends GetView<DiscoveryController> {
           child: CustomScrollView(
             physics: const BouncingScrollPhysics(),
             slivers: [
-              buildSliverAppBar(),
+              // buildSliverAppBar(),
               buildSwiperBanner(),
               buildRecommendPlaylist(),
               const SliverToBoxAdapter(
@@ -126,28 +124,33 @@ class GetXDiscovery extends GetView<DiscoveryController> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    RichText(
-                      overflow: TextOverflow.ellipsis,
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: '${items[index]['name']}\n',
-                            style: TextStyle(
-                                color: GlobalService.to.isDarkModel
-                                    ? Colors.white
-                                    : Colors.black,
-                                overflow: TextOverflow.ellipsis),
-                          ),
-                          TextSpan(
-                              text: items[index]['al']['name'],
-                              style: TextStyle(
-                                  color: GlobalService.to.isDarkModel
-                                      ? Colors.white
-                                      : Colors.black,
-                                  overflow: TextOverflow.ellipsis)),
-                        ],
-                      ),
+                    Text(
+                      '${items[index]['name']}\n',
+                      style: TextStyle(fontSize: 18.0),
                     ),
+                    Text('${items[index]['al']['name']}\n'),
+                    // RichText(
+                    //   overflow: TextOverflow.ellipsis,
+                    //   text: TextSpan(
+                    //     children: [
+                    //       TextSpan(
+                    //         text: '${items[index]['name']}\n',
+                    //         style: TextStyle(
+                    //             color: GlobalService.to.isDarkModel
+                    //                 ? Colors.white
+                    //                 : Colors.black,
+                    //             overflow: TextOverflow.ellipsis),
+                    //       ),
+                    //       TextSpan(
+                    //           text: items[index]['al']['name'],
+                    //           style: TextStyle(
+                    //               color: GlobalService.to.isDarkModel
+                    //                   ? Colors.white
+                    //                   : Colors.black,
+                    //               overflow: TextOverflow.ellipsis)),
+                    //     ],
+                    //   ),
+                    // ),
                   ],
                 ),
               )
@@ -269,25 +272,6 @@ class GetXDiscovery extends GetView<DiscoveryController> {
   //   );
   // }
 
-  // AppBar
-  SliverAppBar buildSliverAppBar() {
-    return SliverAppBar(
-      elevation: 0.0,
-      floating: true,
-      // backgroundColor:
-      //     GlobalService.to.isDarkModel ? Colors.black : Colors.white,
-      leading: InkWell(
-        onTap: () => Get.to(() => const Mine()),
-        child: const Hero(
-          tag: 'flutter_dash',
-          child: Icon(
-            Icons.flutter_dash,
-          ),
-        ),
-      ),
-    );
-  }
-
   // 推荐歌单(推荐歌单)
   SliverToBoxAdapter buildRecommendPlaylist() {
     return SliverToBoxAdapter(
@@ -315,8 +299,8 @@ class GetXDiscovery extends GetView<DiscoveryController> {
                             InkWell(
                               onTap: () {
                                 controller.getSongs("${item[index]['id']}");
-                                Get.to(
-                                  () => const TopPlaylistSongsPage(),
+                                Get.toNamed(
+                                  '/playList',
                                   arguments: item[index],
                                 );
                               },

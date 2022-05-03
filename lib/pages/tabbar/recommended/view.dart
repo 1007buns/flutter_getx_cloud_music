@@ -3,12 +3,14 @@ import 'package:get/get.dart';
 
 import 'controller.dart';
 
-class MineView extends GetView<MineController> {
+class RecommendedView extends GetView<RecommendedController> {
+  const RecommendedView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: Text('MineView'),
+        child: Text('Recommended'),
       ),
     );
   }

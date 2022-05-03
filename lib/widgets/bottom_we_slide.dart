@@ -12,12 +12,14 @@ class BottomWeSlide extends GetView<DiscoveryController> {
     required this.panelMinSize,
     required this.body,
     this.footer,
+    this.appBar,
     this.title = '星河烂漫',
     this.image =
         'https://p1.music.126.net/k2gPfg6jxLIejjJFZdjJZg==/109951165870556526.jpg',
   }) : super(key: key);
   Widget body;
   Widget? footer;
+  Widget? appBar;
   double panelMinSize;
   String title, image;
   Icon playIcon = Icon(Icons.play_circle_outline);
@@ -28,26 +30,32 @@ class BottomWeSlide extends GetView<DiscoveryController> {
     var size = MediaQuery.of(context).size;
     return Obx(
       () => WeSlide(
-        footer: footer,
-        footerHeight: 55,
+        // footer: footer,
+        // footerHeight: 55,
         parallax: true,
         blur: true,
         overlay: true,
+        hideAppBar: true,
         controller: _weSlideController,
         // backgroundColor:
         //     GlobalService.to.isDarkModel ? Colors.black : Colors.white,
         panelMinSize: panelMinSize,
         panelMaxSize: size.height,
         body: body,
+        appBar: appBar,
+        appBarHeight: 120,
+
         panel: Container(
-          // color: GlobalService.to.isDarkModel ? Colors.black : Colors.white,
-          child: Center(
-            child: Text("这里是歌曲详情页面 😊",
-                style: Theme.of(context).textTheme.headline6),
+          color: GlobalService.to.isDarkModel ? Colors.black : Colors.white,
+          child: const Center(
+            child: Text(
+              "这里是歌曲详情页面 😊",
+              // style: Theme.of(context).textTheme.headline6,
+            ),
           ),
         ),
         panelHeader: Container(
-          height: 45.0,
+          height: 60.0,
           color: GlobalService.to.isDarkModel ? Colors.black : Colors.white,
           child: InkWell(
             highlightColor: Colors.blueAccent,

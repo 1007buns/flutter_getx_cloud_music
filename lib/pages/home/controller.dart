@@ -16,6 +16,13 @@ class HomeController extends GetxController {
   // 当前tab页码
   final page = 0.obs;
 
+  /// Tab页控制器
+  // late final TabController tabController;
+
+  late final List<Widget> tabs;
+
+  late final List<String> tabValues;
+
   @override
   void onInit() {
     super.onInit();
@@ -25,6 +32,17 @@ class HomeController extends GetxController {
       {'icon': Icons.add, 'text': "我的", 'activeIcon': Icons.find_in_page},
       {'icon': Icons.add, 'text': "账号", 'activeIcon': Icons.find_in_page},
     ];
+
+    tabValues = [
+      '我的',
+      '发现',
+      '推荐',
+    ];
+
+    tabs = tabValues.map((e) {
+      return Tab(text: e);
+    }).toList();
+
     bottomTabs = tabTitles
         .map(
           (tab) => BubbleBottomBarItem(
@@ -48,18 +66,16 @@ class HomeController extends GetxController {
         )
         .toList();
     pageController = PageController(initialPage: page.value, keepPage: true);
-
-    bubbleBottomBarItem();
+    // tabController =
+    //     TabController(length: tabs.length, vsync: ScrollableState());
   }
 
   @override
   void dispose() {
-    super.dispose();
     pageController.dispose();
+    // tabController.dispose();
+    super.dispose();
   }
-
-  /// bubbleBottomBarItem
-  void bubbleBottomBarItem() {}
 
   /// tab栏动画
   void handleNavBarTap(int index) {

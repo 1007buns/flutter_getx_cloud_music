@@ -14,36 +14,46 @@ class TestPage extends StatefulWidget {
 }
 
 class _TestPageState extends State<TestPage>
-    with AutomaticKeepAliveClientMixin {
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+  List tabs = ["新闻", "历史", "图片"];
+
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(length: tabs.length, vsync: this);
   }
-
-  final DiscoveryController _controller = Get.put(DiscoveryController());
 
   @override
   Widget build(BuildContext context) {
-    final _colorScheme = Theme.of(context).colorScheme;
-    const double _panelMinSize = 70.0;
-    final double _panelMaxSize = MediaQuery.of(context).size.height;
-    var isShow = false.obs;
-    return Obx(
-      () => Scaffold(
-        backgroundColor:
-            GlobalService.to.isDarkModel ? Colors.black : Colors.white,
-        body: Center(
-          child: Column(
-            children: [
-              const Text('这里是测试页面', style: TextStyle(fontSize: 35)),
-            ],
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("App Name"),
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: tabs.map((e) => Tab(text: e)).toList(),
         ),
+      ),
+      body: TabBarView(
+        //构建
+        controller: _tabController,
+        children: tabs.map((e) {
+          return Container(
+            alignment: Alignment.center,
+            child: Text(e, textScaleFactor: 5),
+          );
+        }).toList(),
       ),
     );
   }
 
   @override
-  // TODO: implement wantKeepAlive
-  bool get wantKeepAlive => true;
+  void dispose() {
+    // 释放资源
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  bool get wantKeepAlive => throw UnimplementedError();
 }
