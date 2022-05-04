@@ -4,8 +4,9 @@ import 'package:flutter_getx_cloud_music/widgets/bottom_we_slide.dart';
 import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../global.dart';
+import 'controller/play_song_controller.dart';
 
-class TopPlaylistSongsPage extends GetView<DiscoveryController> {
+class TopPlaylistSongsPage extends GetView<PlaySongController> {
   const TopPlaylistSongsPage({Key? key}) : super(key: key);
 
   @override
@@ -15,18 +16,20 @@ class TopPlaylistSongsPage extends GetView<DiscoveryController> {
       () => Scaffold(
         // backgroundColor:
         //     GlobalService.to.isDarkModel ? Colors.black : Colors.white,
-        body: CustomScrollView(
-          primary: true,
-          physics: const BouncingScrollPhysics(),
-          slivers: [
-            buildAppBar(),
-            buildSongsListIntroduce(),
-            SliverPersistentHeader(
-              pinned: true,
-              delegate: MySliverPersistentHeaderDelegate(),
-            ),
-            buildSongPlaylist(),
-          ],
+        body: BottomWeSlide(
+          body: CustomScrollView(
+            primary: true,
+            physics: const BouncingScrollPhysics(),
+            slivers: [
+              buildAppBar(),
+              buildSongsListIntroduce(),
+              SliverPersistentHeader(
+                pinned: true,
+                delegate: MySliverPersistentHeaderDelegate(),
+              ),
+              buildSongPlaylist(),
+            ],
+          ),
         ),
       ),
     );
@@ -41,8 +44,19 @@ class TopPlaylistSongsPage extends GetView<DiscoveryController> {
           leading: Text('${index + 1}'),
           title: InkWell(
               child: Text('${item[index]['name']}'),
-              onTap: () {
+              onTap: () async {
                 print('音乐id:${item[index]['id']}');
+                controller.id.value = item[index]['id'];
+
+                await controller.getSongUrl(controller.id.value);
+                if (controller.songBody[0]['url'] != null) {
+                  await controller.audioPlayer.stop();
+                  controller.play('${controller.songBody[0]['url']}');
+                  controller.isShow.value = true;
+                } else {
+                  print('该歌曲尚未获取版权，请稍后再试');
+                  Get.snackbar('该歌曲尚未获取版权', '请您稍后再试');
+                }
               }),
           subtitle: Text('${item[index]['ar'][0]['name']}'),
           trailing: const Icon(Icons.more_vert),
@@ -117,64 +131,11 @@ class TopPlaylistSongsPage extends GetView<DiscoveryController> {
       ),
     );
   }
-
-  // 已弃用
-  // Obx buildPlayAllSliverBar() {
-  //   return Obx(
-  //     () => SliverAppBar(
-  //       pinned: true,
-  //       elevation: 0.0,
-  //       backgroundColor:
-  //           GlobalService.to.isDarkModel ? Colors.black : Colors.white,
-  //       leading: const Icon(Icons.play_circle),
-  //       title: Obx(() => Row(
-  //             mainAxisAlignment: MainAxisAlignment.start,
-  //             children: [
-  //               const Text("播放全部"),
-  //               const SizedBox(width: 5.0),
-  //               Text(
-  //                 "(${controller.songsPlaylist.length})",
-  //                 style: const TextStyle(
-  //                   color: Colors.grey,
-  //                   fontSize: 12,
-  //                 ),
-  //               ),
-  //             ],
-  //           )),
-  //       actions: const [
-  //         Icon(Icons.cloud_download_rounded),
-  //         SizedBox(width: 20),
-  //         Icon(Icons.download_done),
-  //       ],
-  //     ),
-  //   );
-  // }
-
-// // 歌单歌曲列表(弃用)
-//   Obx buildSongPlaylist(int counter) {
-//     return Obx(
-//       (() => SliverToBoxAdapter(
-//             child: Column(
-//               children: controller.songsPlaylist
-//                   .map(
-//                     (e) => ListTile(
-//                       leading: Text('${counter++}'),
-//                       title: Text('${e['name']}'),
-//                       subtitle: Text('${e['ar'][0]['name']}'),
-//                       trailing: const Icon(Icons.more_vert),
-//                     ),
-//                   )
-//                   .toList(),
-//             ),
-//           )),
-//     );
-//   }
-
 }
 
 // MySliverPersistentHeader
 class MySliverPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
-  final DiscoveryController _controller = Get.put(DiscoveryController());
+  final PlaySongController _controller = Get.put(PlaySongController());
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {

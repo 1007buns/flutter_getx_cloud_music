@@ -7,7 +7,6 @@ import 'package:flutter_getx_cloud_music/widgets/bottom_we_slide.dart';
 import 'package:get/get.dart';
 import '../tabbar/mine/view.dart';
 import '../tabbar/recommended/view.dart';
-import '../test.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -46,8 +45,6 @@ class _HomePageState extends State<HomePage>
           ],
         ),
         body: buildTabBarView(),
-        panelMinSize: 60.0,
-        // footer: _buildBottomNavigationBar(),
       ),
     );
   }
@@ -84,9 +81,6 @@ class _HomePageState extends State<HomePage>
         },
         children: const [
           Discovery(),
-          TestPage(),
-          TestPage(),
-          TestPage(),
         ],
       );
 }

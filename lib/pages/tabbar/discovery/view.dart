@@ -5,6 +5,7 @@ import 'package:flutter_getx_cloud_music/pages/tabbar/mine/index.dart';
 import 'package:get/get.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:shimmer/shimmer.dart';
+import '../../../widgets/controller/play_song_controller.dart';
 import 'controller.dart';
 
 class Discovery extends StatefulWidget {
@@ -298,7 +299,9 @@ class GetXDiscovery extends GetView<DiscoveryController> {
                           children: [
                             InkWell(
                               onTap: () {
-                                controller.getSongs("${item[index]['id']}");
+                                final PlaySongController _controller =
+                                    Get.put(PlaySongController());
+                                _controller.getSongs("${item[index]['id']}");
                                 Get.toNamed(
                                   '/playList',
                                   arguments: item[index],

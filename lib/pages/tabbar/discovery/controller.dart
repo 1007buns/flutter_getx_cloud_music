@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_getx_cloud_music/utils/dio_util/dio_method.dart';
 import 'package:flutter_getx_cloud_music/utils/dio_util/dio_response.dart';
 import 'package:flutter_getx_cloud_music/utils/dio_util/dio_util.dart';
@@ -6,21 +7,10 @@ import 'package:get/get.dart';
 
 class DiscoveryController extends GetxController {
   var isLoding = false.obs;
-  var isShow = false.obs;
+
   List swiper = [].obs;
   List netPlaylist = [].obs;
   List trackPlaylist = [].obs;
-  List songsPlaylist = [].obs;
-
-  void getSongs(String id) async {
-    if (songsPlaylist.isNotEmpty) {
-      songsPlaylist.clear();
-      getPlaylistSongs(id);
-    } else {
-      getPlaylistSongs(id);
-      // update();
-    }
-  }
 
   @override
   Future<void> onInit() async {
@@ -99,29 +89,6 @@ class DiscoveryController extends GetxController {
     } else {
       print('getPlaylisTrack() 重新获取数据');
       getPlaylisTrack();
-    }
-  }
-
-  // 获取歌单数据 /playlist/track/all?id=5028497628&limit=10&offset=1
-  Future<void> getPlaylistSongs(String id) async {
-    print('获取歌单id: $id 数据');
-    DioResponse res = await dioUtil.request(
-      '/playlist/track/all?id=$id',
-      method: DioMethod.get,
-    );
-    var data;
-    data = jsonDecode(res.data);
-    // print(data);
-    List playlistSongs = data['songs'];
-    if (res.code == 0) {
-      print('获取歌单数据成功');
-      playlistSongs.forEach((items) => songsPlaylist.add(items));
-      print(songsPlaylist);
-      update();
-      // isLoding.value = true;
-    } else {
-      print('重新获取歌单数据');
-      getPlaylistSongs(id);
     }
   }
 }

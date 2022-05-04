@@ -3,13 +3,13 @@ import 'package:get/get.dart';
 import 'package:we_slide/we_slide.dart';
 
 import '../global.dart';
-import '../pages/tabbar/discovery/controller.dart';
+
+import 'controller/play_song_controller.dart';
 
 // ignore: must_be_immutable
-class BottomWeSlide extends GetView<DiscoveryController> {
+class BottomWeSlide extends GetView<PlaySongController> {
   BottomWeSlide({
     Key? key,
-    required this.panelMinSize,
     required this.body,
     this.footer,
     this.appBar,
@@ -20,7 +20,7 @@ class BottomWeSlide extends GetView<DiscoveryController> {
   Widget body;
   Widget? footer;
   Widget? appBar;
-  double panelMinSize;
+
   String title, image;
   Icon playIcon = Icon(Icons.play_circle_outline);
   Icon stopIcon = Icon(Icons.stop_circle_outlined);
@@ -28,6 +28,7 @@ class BottomWeSlide extends GetView<DiscoveryController> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+
     return Obx(
       () => WeSlide(
         // footer: footer,
@@ -37,9 +38,9 @@ class BottomWeSlide extends GetView<DiscoveryController> {
         overlay: true,
         hideAppBar: true,
         controller: _weSlideController,
-        // backgroundColor:
-        //     GlobalService.to.isDarkModel ? Colors.black : Colors.white,
-        panelMinSize: panelMinSize,
+        backgroundColor:
+            GlobalService.to.isDarkModel ? Colors.black : Colors.white,
+        panelMinSize: 60.0,
         panelMaxSize: size.height,
         body: body,
         appBar: appBar,
@@ -56,7 +57,7 @@ class BottomWeSlide extends GetView<DiscoveryController> {
         ),
         panelHeader: Container(
           height: 60.0,
-          color: GlobalService.to.isDarkModel ? Colors.black : Colors.white,
+          // color: GlobalService.to.isDarkModel ? Colors.black : Colors.white,
           child: InkWell(
             highlightColor: Colors.blueAccent,
             onTap: () {
@@ -72,9 +73,13 @@ class BottomWeSlide extends GetView<DiscoveryController> {
                   Text(title),
                   InkWell(
                       highlightColor: Colors.black,
-                      onTap: () {
-                        controller.isShow.value = !controller.isShow.value;
+                      onTap: () async {
                         print('点击了播放按钮${controller.isShow.value}');
+
+                        controller.isShow.value = !controller.isShow.value;
+                        controller.isShow.value
+                            ? controller.play(controller.songBody[0]['url'])
+                            : controller.audioPlayer.pause();
                       },
                       child: controller.isShow.value ? stopIcon : playIcon),
                 ],
@@ -82,9 +87,9 @@ class BottomWeSlide extends GetView<DiscoveryController> {
               trailing: InkWell(
                   onTap: () {
                     print('播放列表');
+                    controller.audioPlayer.pause();
                   },
                   child: const Icon(Icons.list_sharp)),
-              // subtitle: const Text('许嵩'),
             ),
           ),
           // const Center(child: Text("Slide to Up ☝️"),

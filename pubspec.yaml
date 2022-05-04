@@ -38,12 +38,12 @@ dependencies:
   dio: ^4.0.6 
   card_swiper: ^2.0.3 #轮播图
   bubble_bottom_bar: ^2.0.0 #底栏模块
-  flutter_easyrefresh: ^2.2.1
-  we_slide: ^2.3.0
-  shimmer: ^2.0.0
-  cached_network_image: ^3.2.0
-  flutter_slider_drawer: ^2.1.1
-  audioplayers: ^0.20.1
+  flutter_easyrefresh: ^2.2.1 #下拉刷新上拉加载
+  we_slide: ^2.3.0 #底部播放器
+  shimmer: ^2.0.0 #占位符
+  cached_network_image: ^3.2.0 #网络图片缓存
+  flutter_slider_drawer: ^2.1.1 #抽屉
+  audioplayers: ^0.20.1 #音频播放器
 
 dev_dependencies:
   flutter_test:
